@@ -11,7 +11,7 @@ func ProcessQueueRed() {
 	processQueue(func(s string) {
 		log.Printf("Red message: %s", s)
 		c := context.Background()
-		_, err := dbconn.DB.CreateRedName(c, s)
+		_, err := dbconn.DB.CreateRedWord(c, s)
 		if err != nil {
 			log.Printf("Send error: %v", err)
 			panic(err)
@@ -23,7 +23,7 @@ func ProcessQueueGreen() {
 	processQueue(func(s string) {
 		log.Printf("Green message: %s", s)
 		c := context.Background()
-		dbconn.DB.CreateGreenName(c, s)
+		dbconn.DB.CreateGreenWord(c, s)
 	})
 }
 

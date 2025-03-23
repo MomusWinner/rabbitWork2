@@ -10,18 +10,18 @@ import (
 	"database/sql"
 )
 
-const createGreenName = `-- name: CreateGreenName :execresult
+const createGreenWord = `-- name: CreateGreenWord :execresult
 insert into green_word (name) values ($1)
 `
 
-func (q *Queries) CreateGreenName(ctx context.Context, name string) (sql.Result, error) {
-	return q.db.ExecContext(ctx, createGreenName, name)
+func (q *Queries) CreateGreenWord(ctx context.Context, name string) (sql.Result, error) {
+	return q.db.ExecContext(ctx, createGreenWord, name)
 }
 
-const createRedName = `-- name: CreateRedName :execresult
+const createRedWord = `-- name: CreateRedWord :execresult
 insert into red_word (name) values ($1)
 `
 
-func (q *Queries) CreateRedName(ctx context.Context, name string) (sql.Result, error) {
-	return q.db.ExecContext(ctx, createRedName, name)
+func (q *Queries) CreateRedWord(ctx context.Context, name string) (sql.Result, error) {
+	return q.db.ExecContext(ctx, createRedWord, name)
 }
