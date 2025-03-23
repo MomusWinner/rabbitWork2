@@ -1,0 +1,62 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - myNetwork
+
+  rabbitmq:
+    image: rabbitmq:3.13.7-management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 7s
+      timeout: 7s
+      retries: 4
+    networks:
+      - myNetwork
+
+  db:
+    image: postgres:17-alpine
+    container_name: game-platform-postgres
+    env_file:
+      - .env
+    ports:
+      - 5555:5432
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}" ]
+      interval: 1s
+      timeout: 1s
+      retries: 60
+    restart: always
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data/
+    networks:
+      - myNetwork
+
+  migrate:
+    image: migrate/migrate
+    volumes:
+      - ./db/migrations:/db/migrations
+    depends_on:
+      - db
+    command: ["-source=file://db/migrations", "-database",  "postgres://admin:admin@db:5432/rabbit_test?sslmode=disable", "up"]
+    restart: on-failure
+    networks:
+      - myNetwork
+
+volumes:
+  postgres_volume:
+
+networks:
+  myNetwork:
+    driver: bridge
+
