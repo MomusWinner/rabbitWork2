@@ -47,7 +47,8 @@ services:
     volumes:
       - ./db/migrations:/db/migrations
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     command: ["-source=file://db/migrations", "-database",  "postgres://admin:admin@db:5432/rabbit_test?sslmode=disable", "up"]
     restart: on-failure
     networks:
