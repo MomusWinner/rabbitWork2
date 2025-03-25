@@ -6,7 +6,7 @@ FROM golang:1.24.1-alpine3.21 AS builder
 WORKDIR /mysource
 
 COPY ./cmd ./cmd
-COPY ./vendor ./vendor
+# COPY ./vendor* ./vendor
 COPY ./go.mod ./go.sum ./.env ./
 COPY ./internal ./internal  
 COPY ./database ./database

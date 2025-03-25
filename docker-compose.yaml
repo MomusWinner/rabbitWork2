@@ -18,8 +18,8 @@ services:
       - 15672:15672
     healthcheck:
       test: rabbitmq-diagnostics -q ping
-      interval: 7s
-      timeout: 7s
+      interval: 10s
+      timeout: 30s
       retries: 4
     networks:
       - myNetwork
